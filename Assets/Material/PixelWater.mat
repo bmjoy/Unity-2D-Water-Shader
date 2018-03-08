@@ -77,9 +77,12 @@ Material:
     - _DistX1: 0
     - _DistX2: 0
     - _Distortion: 0.1
-    - _Distortion1: 0.03
+    - _Distortion1: 0.06
     - _Distortion2: 0.03
     - _DstBlend: 0
+    - _FoamAmount: 0
+    - _FoamAmountX: 0
+    - _FoamAmountY: 0.001
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -99,5 +102,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorMod: {r: 0.52389705, g: 0.5706136, b: 0.625, a: 0}
-    - _ColorTint: {r: 0.35521197, g: 0.43158934, b: 0.53676474, a: 0}
+    - _ColorTint: {r: 0.26167822, g: 0.32172474, b: 0.4044118, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FoamColor: {r: 0.9852941, g: 0.9852941, b: 0.9852941, a: 0}

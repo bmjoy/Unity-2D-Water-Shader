@@ -9,8 +9,11 @@
 		_DistX2("Layer 2 X", Float) = 0.0
 
 		_MainTex("Render Texture", 2D) = "white" {}
+		_ColorTint("Color Tint", Color) = (0,0,0,0)
 
-		_ColorTint("Color Tint", Color) = (0,0,0,0)		
+		_FoamAmountX("Foam Amount X", Float) = 0.0
+		_FoamAmountY("Foam Amount Y", Float) = 0.0
+		_FoamColor("Foam Color", Color) = (0,0,0,0)
 
 		_Perspective ("Perspective", Float) = 0.0
 	}
@@ -48,6 +51,10 @@
 
 			half4 _ColorTint;
 
+			float _FoamAmountX;
+			float _FoamAmountY;
+			half4 _FoamColor;
+
 			float _Perspective;
 
 
@@ -83,8 +90,17 @@
 				half2 displacement1 = tex2D(_DispMap1, float2(i.uv1.x + _OffsetX1, i.uv1.y) + perspectiveCorrection);
 				half2 displacement2 = tex2D(_DispMap2, float2(i.uv2.x + _OffsetX2, i.uv2.y) + perspectiveCorrection);
 				
-				float2 adjusted = i.uv.xy + (displacement1.rg - .5) * _Distortion1 + (displacement2.rg - .5) * _Distortion2;
+				float2 calculatedDisplacement = (displacement1.rg - .5) * _Distortion1 + (displacement2.rg - .5) * _Distortion2;
+
+				float2 adjusted = i.uv.xy + calculatedDisplacement;
+				
 				half4 output = tex2D(_MainTex, adjusted);
+				if (abs(calculatedDisplacement.r) <= _FoamAmountX) {
+					output = _FoamColor;
+				}
+				if (abs(calculatedDisplacement.g) <= _FoamAmountY) {
+					output = _FoamColor;
+				}
 				return output * _ColorTint;
 			}
 
