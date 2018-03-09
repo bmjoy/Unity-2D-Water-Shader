@@ -1,29 +1,31 @@
 ﻿Shader "Custom/2DWater" {
 	Properties {
 		_DispMap1 ("Displacement Map 1", 2D) = "bump" {}
-		_Distortion1("Distortion Strength 1", Float) = 1.0
+		_Distortion1("Distortion Strength 1", Range(0.0, 1.0)) = 1.0
 		_DistX1("Layer 1 X", Float) = 0.0
 
 		_DispMap2 ("Displacement Map 2", 2D) = "bump" {}
-		_Distortion2("Distortion Strength 2", Float) = 1.0
+		_Distortion2("Distortion Strength 2", Range(0.0, 1.0)) = 1.0
 		_DistX2("Layer 2 X", Float) = 0.0
 
 		_MainTex("Render Texture", 2D) = "white" {}
 		_ColorTint("Color Tint", Color) = (0,0,0,0)
 
-		_FoamAmountX("Foam Amount X", Float) = 0.0
-		_FoamAmountY("Foam Amount Y", Float) = 0.0
+		_FoamAmountX("Foam Amount X", Range(0.0, 0.05)) = 0.0
+		_FoamAmountY("Foam Amount Y", Range(0.0, 0.05)) = 0.0
 		_FoamColor("Foam Color", Color) = (0,0,0,0)
 
-		_Perspective ("Perspective", Float) = 0.0
+		_Perspective ("Perspective", Range(0.0, 1.0)) = 0.0
 	}
 
 	SubShader{
 		Tags
 		{
-			"Queue" = "Geometry"
+			"Queue" = "Transparent"
 			"RenderType" = "Opaque"
 		}
+
+		Cull Off ZWrite Off ZTest Always
 		
 		Pass
 		{
@@ -56,6 +58,8 @@
 			half4 _FoamColor;
 
 			float _Perspective;
+
+			sampler2D _GrabTex;
 
 
 			struct appdata
@@ -95,10 +99,10 @@
 				float2 adjusted = i.uv.xy + calculatedDisplacement;
 				
 				half4 output = tex2D(_MainTex, adjusted);
-				if (abs(calculatedDisplacement.r) <= _FoamAmountX) {
+				if (abs(calculatedDisplacement.r) <= _FoamAmountY) {
 					output = _FoamColor;
 				}
-				if (abs(calculatedDisplacement.g) <= _FoamAmountY) {
+				if (abs(calculatedDisplacement.g) <= _FoamAmountX) {
 					output = _FoamColor;
 				}
 				return output * _ColorTint;
